@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Add Customer</h1>
-    <form action="/customers" method="post">
+    <form action="CustomerServlet?action=add" method="post">
         <input type="hidden" name="action" value="add">
         <label for="username">Username:</label>
         <input type="text" name="username" required><br>

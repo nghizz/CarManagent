@@ -2,64 +2,50 @@ package servlet;
 
 import java.io.IOException;
 
+import com.mysql.cj.log.LogFactory;
+
 import dao.UserDAO;
 import entity.User;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/AuthServlet")
+@WebServlet(urlPatterns = "/login")
 public class AuthServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
-    private UserDAO userDAO;
+    private static UserDAO userDao = new UserDAO();
 
-    public AuthServlet() {
-        super();
-        
-        // Tạo EntityManagerFactory và EntityManager
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("carManagementPU");
-        EntityManager em = emf.createEntityManager();
-        userDAO = new UserDAO(em);
-    }
-
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
-        if ("login".equals(action)) {
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
+        try {
+            User user = userDao.loginUser(username, password);
 
-            User user = userDAO.getUserByUsername(username);
-
-            if (user != null && password.equals(user.getPassword())) {
-                // Đăng nhập thành công
-                request.getSession().setAttribute("user", user);
-
-                // Chuyển hướng đến trang chính sau khi đăng nhập thành công
-                response.sendRedirect("DashboardServlet"); // Thay 'home.jsp' bằng trang bạn muốn chuyển đến
+            if (user != null) {
+                HttpSession session = request.getSession();
+                session.setAttribute("userLogin", user);
+                session.setAttribute("userRole", user.getRole());
+                response.sendRedirect(request.getContextPath() + "/home");
             } else {
-                // Đăng nhập thất bại
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-
-                String errorJson = "{ \"error\": \"Tên đăng nhập hoặc mật khẩu không đúng.\" }";
-                response.getWriter().write(errorJson);
+                request.setAttribute("loginFail", "User name or password is incorrect");
+                request.getRequestDispatcher("/views/login.jsp").forward(request, response);
             }
+        } catch (Exception e) {
+            
         }
     }
+    
 
-
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Hiển thị form đăng nhập
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/login.jsp");
-        dispatcher.forward(request, response);
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/views/login.jsp").forward(request, response);
     }
 }

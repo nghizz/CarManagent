@@ -1,176 +1,88 @@
 package entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "users")
 public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
-
-    @Column(name = "username", nullable = false, unique = true, length = 255)
+    private int userId;
     private String username;
-
-    @Column(name = "password", nullable = false, length = 255)
     private String password;
-
-    @Column(name = "role", nullable = false, length = 255)
     private String role;
-
-    @Column(name = "fullName", length = 255)
     private String fullName;
-
-    @Column(name = "phoneNumber", length = 20)
     private String phoneNumber;
-
-    @Column(name = "identityCardNumber", length = 20)
     private String identityCardNumber;
-
-    @Column(name = "createdAt")
     private LocalDateTime createdAt;
-
-    @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "user")
-    private List<CarProfile> carProfiles;
+    // Getters and Setters
+    public int getUserId() {
+        return userId;
+    }
 
-    @OneToMany(mappedBy = "user")
-    private List<Schedule> schedules;
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-    @OneToMany(mappedBy = "technician")
-    private List<Schedule> technicianSchedules;
+    public String getUsername() {
+        return username;
+    }
 
-    @OneToMany(mappedBy = "customer")
-    private List<Maintenance> customerMaintenances;
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    @OneToMany(mappedBy = "technician")
-    private List<Maintenance> technicianMaintenances;
+    public String getPassword() {
+        return password;
+    }
 
-	public Long getUserId() {
-		return userId;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+    public String getRole() {
+        return role;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getFullName() {
+        return fullName;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public String getIdentityCardNumber() {
+        return identityCardNumber;
+    }
 
-	public String getFullName() {
-		return fullName;
-	}
+    public void setIdentityCardNumber(String identityCardNumber) {
+        this.identityCardNumber = identityCardNumber;
+    }
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 
-	public String getIdentityCardNumber() {
-		return identityCardNumber;
-	}
-
-	public void setIdentityCardNumber(String identityCardNumber) {
-		this.identityCardNumber = identityCardNumber;
-	}
-
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public List<CarProfile> getCarProfiles() {
-		return carProfiles;
-	}
-
-	public void setCarProfiles(List<CarProfile> carProfiles) {
-		this.carProfiles = carProfiles;
-	}
-
-	public List<Schedule> getSchedules() {
-		return schedules;
-	}
-
-	public void setSchedules(List<Schedule> schedules) {
-		this.schedules = schedules;
-	}
-
-	public List<Schedule> getTechnicianSchedules() {
-		return technicianSchedules;
-	}
-
-	public void setTechnicianSchedules(List<Schedule> technicianSchedules) {
-		this.technicianSchedules = technicianSchedules;
-	}
-
-	public List<Maintenance> getCustomerMaintenances() {
-		return customerMaintenances;
-	}
-
-	public void setCustomerMaintenances(List<Maintenance> customerMaintenances) {
-		this.customerMaintenances = customerMaintenances;
-	}
-
-	public List<Maintenance> getTechnicianMaintenances() {
-		return technicianMaintenances;
-	}
-
-	public void setTechnicianMaintenances(List<Maintenance> technicianMaintenances) {
-		this.technicianMaintenances = technicianMaintenances;
-	}
-
-    // Constructors, getters and setters
-    
-    
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

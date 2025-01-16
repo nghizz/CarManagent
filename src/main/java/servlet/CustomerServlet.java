@@ -1,70 +1,124 @@
 package servlet;
 
-import dao.CustomerDAO;
-import entity.User;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
 import java.io.IOException;
+import java.sql.Connection;
+import java.time.LocalDateTime;
 import java.util.List;
 
-@WebServlet("/customers")
-public class CustomerServlet extends HttpServlet {
+import dao.CustomerDAO;
+import entity.User;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import utils.DBUtils;
 
-    private CustomerDAO customerDAO = new CustomerDAO();
+@WebServlet("/CustomerServlet")
+public class CustomerServlet extends HttpServlet {
+    private CustomerDAO customerDAO;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+    public void init() {
+        Connection conn = DBUtils.getConnection();
+        customerDAO = new CustomerDAO();
+    }
 
-        if ("edit".equals(action)) {
-            long userId = Long.parseLong(request.getParameter("userId"));
-            User customer = customerDAO.getAllCustomers().stream()
-                                        .filter(c -> c.getUserId() == userId)
-                                        .findFirst()
-                                        .orElse(null);
-            if (customer != null) {
-                request.setAttribute("customer", customer);
-                request.getRequestDispatcher("/WEB-INF/views/editCustomer.jsp").forward(request, response);
-            } else {
-                // Nếu không tìm thấy khách hàng, chuyển về danh sách
-                response.sendRedirect("/WEB-INF/views/customers");
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        if (action == null) {
+            action = "list";
+        }
+
+        try {
+            switch (action) {
+                case "list":
+                    listCustomers(req, resp);
+                    break;
+                case "search":
+                    searchCustomers(req, resp);
+                    break;
+                case "delete":
+                    deleteCustomer(req, resp);
+                    break;
+                default:
+                    listCustomers(req, resp);
+                    break;
             }
-        } else if ("delete".equals(action)) {
-            long userId = Long.parseLong(request.getParameter("userId"));
-            customerDAO.deleteCustomer(userId);
-            response.sendRedirect("/customers");
-        } else if ("search".equals(action)) {
-            String name = request.getParameter("name");
-            List<User> customers = customerDAO.searchCustomers(name);
-            request.setAttribute("customers", customers);
-            request.getRequestDispatcher("/WEB-INF/views/listCustomers.jsp").forward(request, response);
-        } else {
-            List<User> customers = customerDAO.getAllCustomers();
-            request.setAttribute("customers", customers);
-            request.getRequestDispatcher("/WEB-INF/views/listCustomers.jsp").forward(request, response);
+        } catch (Exception e) {
+            throw new ServletException(e);
         }
     }
-    
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
 
-        if ("add".equals(action)) {
-            User customer = new User();
-            customer.setUsername(request.getParameter("username"));
-            customer.setFullName(request.getParameter("fullName"));
-            customer.setPhoneNumber(request.getParameter("phone"));
-            customerDAO.addCustomer(customer);
-            response.sendRedirect("/WEB-INF/views/customers");
-        } else if ("update".equals(action)) {
-            User customer = new User();
-            customer.setUserId(Long.parseLong(request.getParameter("userId")));
-            customer.setFullName(request.getParameter("fullName"));
-            customer.setPhoneNumber(request.getParameter("phone"));
-            customerDAO.updateCustomer(customer);
-            response.sendRedirect("/WEB-INF/views/customers");
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        if (action == null) {
+            action = "list";
         }
+
+        try {
+            switch (action) {
+                case "add":
+                    addCustomer(req, resp);
+                    break;
+                case "update":
+                    updateCustomer(req, resp);
+                    break;
+                default:
+                    listCustomers(req, resp);
+                    break;
+            }
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
+
+    private void listCustomers(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        List<User> customers = customerDAO.getAllCustomers();
+        req.setAttribute("customers", customers);
+        req.getRequestDispatcher("/views/listCustomers.jsp").forward(req, resp);
+    }
+
+    private void searchCustomers(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String keyword = req.getParameter("keyword");
+        List<User> customers = customerDAO.searchCustomers(keyword);
+        req.setAttribute("customers", customers);
+        req.getRequestDispatcher("/views/listCustomers.jsp").forward(req, resp);
+    }
+
+    private void addCustomer(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        User customer = new User();
+        customer.setUsername(req.getParameter("username"));
+        customer.setPassword(req.getParameter("password"));
+        customer.setFullName(req.getParameter("fullName"));
+        customer.setPhoneNumber(req.getParameter("phoneNumber"));
+        customer.setIdentityCardNumber(req.getParameter("identityCardNumber"));
+        customer.setRole("customer");
+        customer.setCreatedAt(LocalDateTime.now());
+        customer.setUpdatedAt(LocalDateTime.now());
+
+        customerDAO.addCustomer(customer);
+        resp.sendRedirect("CustomerServlet?action=list");
+    }
+
+    private void updateCustomer(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        int id = Integer.parseInt(req.getParameter("userId"));
+        User customer = new User();
+        customer.setUserId(id);
+        customer.setFullName(req.getParameter("fullName"));
+        customer.setPhoneNumber(req.getParameter("phoneNumber"));
+        customer.setIdentityCardNumber(req.getParameter("identityCardNumber"));
+        customer.setUpdatedAt(LocalDateTime.now());
+
+        customerDAO.updateCustomer(customer);
+        resp.sendRedirect("CustomerServlet?action=list");
+    }
+
+    private void deleteCustomer(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        int id = Integer.parseInt(req.getParameter("userId"));
+        customerDAO.deleteCustomer(id);
+        resp.sendRedirect("CustomerServlet?action=list");
     }
 }

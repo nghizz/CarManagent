@@ -1,5 +1,6 @@
 package entity;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -14,7 +15,11 @@ import jakarta.persistence.Table;
 @Table(name = "spareparts")
 public class SpareParts {
 
-    @Id
+    public SpareParts(int int1, String string, String string2, int int2, BigDecimal bigDecimal, String string3, Date date) {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long partId;
 

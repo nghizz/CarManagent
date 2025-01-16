@@ -43,6 +43,11 @@ public class CarProfile {
     @OneToMany(mappedBy = "car")
     private List<Maintenance> maintenances;
 
+	public CarProfile(long long1, String string, String string2, String string3, int int1, String string4, User user2,
+			List<Schedule> schedulesByCarId, List<Maintenance> maintenancesByCarId) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Long getCarId() {
 		return carId;
 	}

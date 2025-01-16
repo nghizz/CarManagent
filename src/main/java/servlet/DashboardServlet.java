@@ -41,7 +41,7 @@ public class DashboardServlet extends HttpServlet {
             request.setAttribute("user", user); // Thêm thông tin người dùng vào request
 
             // Chuyển hướng đến trang dashboard.jsp
-            request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();

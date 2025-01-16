@@ -4,12 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import utils.DBUtils;
+
 
 public class DashboardDAO {
 
     public int getNewAppointments() throws Exception {
         String query = "SELECT COUNT(*) FROM appointments WHERE status = 'new'";
-        try (Connection connection = UserDAO.getConnection();
+        try (Connection connection = DBUtils.getConnection();
              PreparedStatement ps = connection.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
@@ -21,7 +23,7 @@ public class DashboardDAO {
 
     public double getRevenue() throws Exception {
         String query = "SELECT SUM(amount) FROM payments";
-        try (Connection connection = UserDAO.getConnection();
+        try (Connection connection = DBUtils.getConnection();
              PreparedStatement ps = connection.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
@@ -33,7 +35,7 @@ public class DashboardDAO {
 
     public int getTotalCars() throws Exception {
         String query = "SELECT COUNT(*) FROM cars";
-        try (Connection connection = UserDAO.getConnection();
+        try (Connection connection = DBUtils.getConnection();
              PreparedStatement ps = connection.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {

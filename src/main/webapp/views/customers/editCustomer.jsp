@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Edit Customer</h1>
-    <form action="/customers" method="post">
+    <form action="CustomerServlet?action=update" method="post">
         <input type="hidden" name="action" value="update">
         <input type="hidden" name="userId" value="${customer.userId}">
         <label for="fullName">Full Name:</label>

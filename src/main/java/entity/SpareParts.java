@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "SpareParts")
+@Table(name = "spareparts")
 public class SpareParts {
 
     @Id

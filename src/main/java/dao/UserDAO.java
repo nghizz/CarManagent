@@ -7,9 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import entity.User;
+import jakarta.persistence.EntityManager;
 
 public class UserDAO {
 
+	private EntityManager entityManager;
     // Kết nối đến cơ sở dữ liệu
 	public static Connection getConnection() throws SQLException {
 	    Connection conn = null;
@@ -29,7 +31,36 @@ public class UserDAO {
 	    return conn;
 	}
 
+	public UserDAO(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+	
+	public User getUserById(Long userId) {
+        String query = "SELECT * FROM users WHERE userId = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setLong(1, userId);
 
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getLong("userId"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setRole(rs.getString("role"));
+                user.setFullName(rs.getString("fullName"));
+                user.setPhoneNumber(rs.getString("phoneNumber"));
+                user.setIdentityCardNumber(rs.getString("identityCardNumber"));
+                user.setCreatedAt(rs.getObject("createdAt", java.time.LocalDateTime.class));
+                user.setUpdatedAt(rs.getObject("updatedAt", java.time.LocalDateTime.class));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+	
     // Thêm người dùng mới vào cơ sở dữ liệu
     public boolean addUser(User user) {
         String query = "INSERT INTO users (username, password, role, fullName, phoneNumber, identityCardNumber, createdAt, updatedAt) "

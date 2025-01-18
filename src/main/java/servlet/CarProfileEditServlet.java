@@ -54,11 +54,11 @@ public class CarProfileEditServlet extends HttpServlet {
             // Create a new CarProfile with updated data
             CarProfile car = new CarProfile(carId, licensePlate, brand, model, year, vin, user, Collections.emptyList(), Collections.emptyList());
 
-            // Update the car in the database
+            // Update the car profile in the database
             carProfileDAO.updateCar(car);
 
             // Redirect to the car profiles list page after successful update
-            response.sendRedirect("views/carProfile/carprofiles.jsp");
+            response.sendRedirect("carprofile");
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while updating the car.");

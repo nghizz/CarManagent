@@ -1,15 +1,9 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import entity.Appointment;
-import entity.User;
 import utils.DBUtils;
 
 public class AppointmentDAO {
@@ -69,16 +63,6 @@ public class AppointmentDAO {
             e.printStackTrace();
         }
         return false;
-    }
-
-    // Gửi thông báo (Giả sử gửi email và SMS đã được tích hợp)
-    public void sendNotification(int appointmentId, String message) {
-        Appointment appointment = getAppointmentById(appointmentId);
-        CustomerDAO customerDAO = new CustomerDAO();
-        User customer = customerDAO.getCustomerById(appointment.getCustomerId());
-        String phone = customer.getPhoneNumber();
-        
-        SMSService.sendSMS(phone, message);
     }
 
     // Lấy thông tin lịch hẹn theo ID

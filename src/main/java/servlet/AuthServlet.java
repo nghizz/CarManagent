@@ -32,6 +32,9 @@ public class AuthServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("userLogin", user);
                 session.setAttribute("userRole", user.getRole());
+
+                request.setAttribute("isAdmin", user.getRole().equals("admin"));
+
                 response.sendRedirect(request.getContextPath() + "/home");
             } else {
                 request.setAttribute("loginFail", "User name or password is incorrect");

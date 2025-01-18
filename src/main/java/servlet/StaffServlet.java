@@ -78,14 +78,14 @@ public class StaffServlet extends HttpServlet {
     private void listStaff(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         List<User> staffList = staffDAO.getAllStaff();
         req.setAttribute("staffList", staffList);
-        req.getRequestDispatcher("/views/listStaff.jsp").forward(req, resp);
+        req.getRequestDispatcher("/views/staff/listStaffs.jsp").forward(req, resp);
     }
 
     private void searchStaff(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String keyword = req.getParameter("keyword");
         List<User> staffList = staffDAO.searchStaff(keyword);
         req.setAttribute("staffList", staffList);
-        req.getRequestDispatcher("/views/listStaff.jsp").forward(req, resp);
+        req.getRequestDispatcher("/views/staff/listStaffs.jsp").forward(req, resp);
     }
 
     private void addStaff(HttpServletRequest req, HttpServletResponse resp) throws Exception {

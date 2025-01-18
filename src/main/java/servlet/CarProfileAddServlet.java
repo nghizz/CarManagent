@@ -17,8 +17,7 @@ public class CarProfileAddServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // This will simply display the form for adding a new car
-    	
+        // Display the form for adding a new car profile
         request.getRequestDispatcher("views/carProfile/addcar.jsp").forward(request, response);
     }
 
@@ -39,22 +38,17 @@ public class CarProfileAddServlet extends HttpServlet {
                 return;
             }
 
-            // Create a new CarProfile object with the input data
+            // Create a new CarProfile object
             CarProfile car = new CarProfile(0L, licensePlate, brand, model, year, vin, user, Collections.emptyList(), Collections.emptyList());
 
-            // Save the new car profile to the database
+            // Save the car profile to the database
             carProfileDAO.addCar(car);
 
             // Redirect to the car profiles list page after successful addition
-            // If you're using a relative path
-            response.sendRedirect("carprofiles");
-            
-            // OR if you want to use an absolute path for the JSP file:
-            // response.sendRedirect("Views/carprofiles/carprofiles.jsp");
+            response.sendRedirect("carprofile"); // Redirect to the servlet for listing car profiles
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while adding the car.");
         }
     }
-
 }

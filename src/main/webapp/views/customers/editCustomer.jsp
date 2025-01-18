@@ -14,6 +14,6 @@
         <input type="text" name="phone" value="${customer.phone}" required><br>
         <button type="submit">Update</button>
     </form>
-    <a href="/customers">Back to List</a>
+    <a href="CustomerServlet?action=list">Back to List</a>
 </body>
 </html>

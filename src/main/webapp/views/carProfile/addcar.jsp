@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h2>Add Car Profile</h2>
-        <form action="add" method="post">
+        <form action="addCarProfile" method="post">
             <div class="form-group">
                 <label for="licensePlate">License Plate:</label>
                 <input type="text" class="form-control" id="licensePlate" name="licensePlate" required>
@@ -36,6 +36,7 @@
                 <input type="number" class="form-control" id="userId" name="userId" required>
             </div>
             <button type="submit" class="btn btn-primary">Add Car</button>
+            <a href="carprofile" class="btn btn-secondary ml-2">Back to Car Profiles</a>
         </form>
     </div>
 </body>

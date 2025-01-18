@@ -1,126 +1,104 @@
 package entity;
+
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "carprofile")
 public class CarProfile {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carId;
-
-    @Column(nullable = false, unique = true, length = 20)
     private String licensePlate;
-
-    @Column(length = 255)
     private String brand;
-
-    @Column(length = 255)
     private String model;
-
     private Integer year;
-
-    @Column(length = 255)
     private String vin;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToMany(mappedBy = "car")
     private List<Schedule> schedules;
-
-    @OneToMany(mappedBy = "car")
     private List<Maintenance> maintenances;
 
-	public CarProfile(long long1, String string, String string2, String string3, int int1, String string4, User user2,
-			List<Schedule> schedulesByCarId, List<Maintenance> maintenancesByCarId) {
-		// TODO Auto-generated constructor stub
-	}
+    public CarProfile() {
+    }
 
-	public Long getCarId() {
-		return carId;
-	}
+    public CarProfile(Long carId, String licensePlate, String brand, String model, Integer year, String vin, User user,
+                      List<Schedule> schedules, List<Maintenance> maintenances) {
+        this.carId = carId;
+        this.licensePlate = licensePlate;
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+        this.vin = vin;
+        this.user = user;
+        this.schedules = schedules;
+        this.maintenances = maintenances;
+    }
 
-	public void setCarId(Long carId) {
-		this.carId = carId;
-	}
+    public Long getCarId() {
+        return carId;
+    }
 
-	public String getLicensePlate() {
-		return licensePlate;
-	}
+    public void setCarId(Long carId) {
+        this.carId = carId;
+    }
 
-	public void setLicensePlate(String licensePlate) {
-		this.licensePlate = licensePlate;
-	}
+    public String getLicensePlate() {
+        return licensePlate;
+    }
 
-	public String getBrand() {
-		return brand;
-	}
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
 
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
+    public String getBrand() {
+        return brand;
+    }
 
-	public String getModel() {
-		return model;
-	}
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
-	public void setModel(String model) {
-		this.model = model;
-	}
+    public String getModel() {
+        return model;
+    }
 
-	public Integer getYear() {
-		return year;
-	}
+    public void setModel(String model) {
+        this.model = model;
+    }
 
-	public void setYear(Integer year) {
-		this.year = year;
-	}
+    public Integer getYear() {
+        return year;
+    }
 
-	public String getVin() {
-		return vin;
-	}
+    public void setYear(Integer year) {
+        this.year = year;
+    }
 
-	public void setVin(String vin) {
-		this.vin = vin;
-	}
+    public String getVin() {
+        return vin;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public void setVin(String vin) {
+        this.vin = vin;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public List<Schedule> getSchedules() {
-		return schedules;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public void setSchedules(List<Schedule> schedules) {
-		this.schedules = schedules;
-	}
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
 
-	public List<Maintenance> getMaintenances() {
-		return maintenances;
-	}
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = schedules;
+    }
 
-	public void setMaintenances(List<Maintenance> maintenances) {
-		this.maintenances = maintenances;
-	}
+    public List<Maintenance> getMaintenances() {
+        return maintenances;
+    }
 
-    // Constructors, getters and setters
-    
-    
+    public void setMaintenances(List<Maintenance> maintenances) {
+        this.maintenances = maintenances;
+    }
 }

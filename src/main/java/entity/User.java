@@ -85,4 +85,17 @@ public class User {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+	public void getUser(int userId, String username, String password, String role, String fullName, String phoneNumber,
+			String identityCardNumber, LocalDateTime createdAt, LocalDateTime updatedAt) {
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.fullName = fullName;
+		this.phoneNumber = phoneNumber;
+		this.identityCardNumber = identityCardNumber;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
 }

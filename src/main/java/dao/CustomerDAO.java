@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.User;
+import utils.DBUtils;
 
 public class CustomerDAO {
     private Connection conn;
 
     public CustomerDAO() {
-        this.conn = conn;
+        this.conn = DBUtils.getConnection();
     }
 
     public List<User> getAllCustomers() throws SQLException {
@@ -24,13 +25,13 @@ public class CustomerDAO {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 User customer = new User();
-                customer.setUserId(rs.getInt("user_id"));
+                customer.setUserId(rs.getInt("userId"));
                 customer.setUsername(rs.getString("username"));
-                customer.setFullName(rs.getString("full_name"));
-                customer.setPhoneNumber(rs.getString("phone_number"));
-                customer.setIdentityCardNumber(rs.getString("identity_card_number"));
-                customer.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-                customer.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                customer.setFullName(rs.getString("fullName"));
+                customer.setPhoneNumber(rs.getString("phoneNumber"));
+                customer.setIdentityCardNumber(rs.getString("identityCardNumber"));
+                customer.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
+                customer.setUpdatedAt(rs.getTimestamp("updatedAt").toLocalDateTime());
                 customers.add(customer);
             }
         }
@@ -38,22 +39,23 @@ public class CustomerDAO {
     }
 
     public void addCustomer(User customer) throws SQLException {
-        String query = "INSERT INTO users (username, password, role, full_name, phone_number, identity_card_number, created_at, updated_at) " +
-                "VALUES (?, ?, 'customer', ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO users (username, password, role, fullName, phoneNumber, identityCardNumber, createdAt, updatedAt) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, customer.getUsername());
-            stmt.setString(2, customer.getPassword());
-            stmt.setString(3, customer.getFullName());
-            stmt.setString(4, customer.getPhoneNumber());
-            stmt.setString(5, customer.getIdentityCardNumber());
-            stmt.setTimestamp(6, Timestamp.valueOf(customer.getCreatedAt()));
-            stmt.setTimestamp(7, Timestamp.valueOf(customer.getUpdatedAt()));
+            stmt.setString(2, "1");
+            stmt.setString(3, "customer");
+            stmt.setString(4, customer.getFullName());
+            stmt.setString(5, customer.getPhoneNumber());
+            stmt.setString(6, customer.getIdentityCardNumber());
+            stmt.setTimestamp(7, Timestamp.valueOf(customer.getCreatedAt()));
+            stmt.setTimestamp(8, Timestamp.valueOf(customer.getUpdatedAt()));
             stmt.executeUpdate();
         }
     }
 
     public void updateCustomer(User customer) throws SQLException {
-        String query = "UPDATE users SET full_name = ?, phone_number = ?, identity_card_number = ?, updated_at = ? WHERE user_id = ?";
+        String query = "UPDATE users SET fullName = ?, phoneNumber = ?, identityCardNumber = ?, updatedAt = ? WHERE userId = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, customer.getFullName());
             stmt.setString(2, customer.getPhoneNumber());
@@ -65,7 +67,7 @@ public class CustomerDAO {
     }
 
     public void deleteCustomer(int customerId) throws SQLException {
-        String query = "DELETE FROM users WHERE user_id = ? AND role = 'customer'";
+        String query = "DELETE FROM users WHERE userId = ? AND role = 'customer'";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, customerId);
             stmt.executeUpdate();
@@ -73,7 +75,7 @@ public class CustomerDAO {
     }
 
     public List<User> searchCustomers(String keyword) throws SQLException {
-        String query = "SELECT * FROM users WHERE role = 'customer' AND (full_name LIKE ? OR phone_number LIKE ? OR username LIKE ?)";
+        String query = "SELECT * FROM users WHERE role = 'customer' AND (fullName LIKE ? OR phoneNumber LIKE ? OR username LIKE ?)";
         List<User> customers = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, "%" + keyword + "%");
@@ -82,34 +84,33 @@ public class CustomerDAO {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 User customer = new User();
-                customer.setUserId(rs.getInt("user_id"));
+                customer.setUserId(rs.getInt("userId"));
                 customer.setUsername(rs.getString("username"));
-                customer.setFullName(rs.getString("full_name"));
-                customer.setPhoneNumber(rs.getString("phone_number"));
-                customer.setIdentityCardNumber(rs.getString("identity_card_number"));
-                customer.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-                customer.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                customer.setFullName(rs.getString("fullName"));
+                customer.setPhoneNumber(rs.getString("phoneNumber"));
+                customer.setIdentityCardNumber(rs.getString("identityCardNumber"));
+                customer.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
+                customer.setUpdatedAt(rs.getTimestamp("updatedAt").toLocalDateTime());
                 customers.add(customer);
             }
         }
         return customers;
     }
-    
-    
+
     public User getCustomerById(int customerId) {
-        String query = "SELECT * FROM users WHERE user_id = ?"; // Truy vấn SQL để lấy thông tin khách hàng theo ID
+        String query = "SELECT * FROM users WHERE userId = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, customerId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 User user = new User();
-                user.setUserId(rs.getInt("user_id"));
+                user.setUserId(rs.getInt("userId"));
                 user.setUsername(rs.getString("username"));
-                user.setFullName(rs.getString("full_name"));
-                user.setPhoneNumber(rs.getString("phone_number"));
-                user.setIdentityCardNumber(rs.getString("identity_card_number"));
-                user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-                user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                user.setFullName(rs.getString("fullName"));
+                user.setPhoneNumber(rs.getString("phoneNumber"));
+                user.setIdentityCardNumber(rs.getString("identityCardNumber"));
+                user.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
+                user.setUpdatedAt(rs.getTimestamp("updatedAt").toLocalDateTime());
                 return user;
             }
         } catch (SQLException e) {
@@ -117,5 +118,4 @@ public class CustomerDAO {
         }
         return null;
     }
-
 }

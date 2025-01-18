@@ -78,14 +78,14 @@ public class CustomerServlet extends HttpServlet {
     private void listCustomers(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         List<User> customers = customerDAO.getAllCustomers();
         req.setAttribute("customers", customers);
-        req.getRequestDispatcher("/views/listCustomers.jsp").forward(req, resp);
+        req.getRequestDispatcher("/views/customers/listCustomers.jsp").forward(req, resp);
     }
 
     private void searchCustomers(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String keyword = req.getParameter("keyword");
         List<User> customers = customerDAO.searchCustomers(keyword);
         req.setAttribute("customers", customers);
-        req.getRequestDispatcher("/views/listCustomers.jsp").forward(req, resp);
+        req.getRequestDispatcher("/views/customers/listCustomers.jsp").forward(req, resp);
     }
 
     private void addCustomer(HttpServletRequest req, HttpServletResponse resp) throws Exception {

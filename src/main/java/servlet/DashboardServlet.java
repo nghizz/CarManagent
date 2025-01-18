@@ -22,21 +22,13 @@ public class DashboardServlet extends HttpServlet {
         // Lấy thông tin user từ session
         User user = (User) request.getSession().getAttribute("user");
 
-        if (user == null) {
-            // Chưa đăng nhập, chuyển hướng đến trang đăng nhập
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
         try {
             // Lấy dữ liệu từ database
             int newAppointments = dashboardDAO.getNewAppointments();
-            double revenue = dashboardDAO.getRevenue();
             int totalCars = dashboardDAO.getTotalCars();
 
             // Lưu dữ liệu vào request attributes
             request.setAttribute("newAppointments", newAppointments);
-            request.setAttribute("revenue", revenue);
             request.setAttribute("totalCars", totalCars);
             request.setAttribute("user", user); // Thêm thông tin người dùng vào request
 

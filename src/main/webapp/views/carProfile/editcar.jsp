@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h2>Edit Car Profile</h2>
-        <form action="edit" method="post">
+        <form action="editCarProfile" method="post">
             <input type="hidden" name="carId" value="${car.carId}">
             <div class="form-group">
                 <label for="licensePlate">License Plate:</label>
@@ -37,6 +37,7 @@
                 <input type="number" class="form-control" id="userId" name="userId" value="${car.user.userId}" required>
             </div>
             <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="carprofile" class="btn btn-secondary ml-2">Back to Car Profiles</a>
         </form>
     </div>
 </body>

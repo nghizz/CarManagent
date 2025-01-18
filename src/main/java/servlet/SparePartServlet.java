@@ -28,7 +28,7 @@ public class SparePartServlet extends HttpServlet {
         List<SpareParts> spareParts = sparePartDAO.getAllSpareParts();
         request.setAttribute("spareParts", spareParts);
         // Chuyển hướng đến trang hiển thị danh sách phụ tùng
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/spare_part_list.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("views/sparePart/spare_part_list.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -47,7 +47,7 @@ public class SparePartServlet extends HttpServlet {
                 boolean isUpdated = sparePartDAO.updateStock(sparePartId, quantity);
                 
                 if (isUpdated) {
-                    response.sendRedirect("/views/spare_part_list.jsp");
+                    response.sendRedirect("views/sparePart/spare_part_list.jsp");
                 } else {
                     // Trả về thông báo lỗi nếu không cập nhật thành công
                     response.getWriter().println("Error updating stock.");

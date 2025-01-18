@@ -1,16 +1,13 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 import utils.DBUtils;
-
 
 public class DashboardDAO {
 
     public int getNewAppointments() throws Exception {
-        String query = "SELECT COUNT(*) FROM appointments WHERE status = 'new'";
+        String query = "SELECT COUNT(*) FROM maintenance WHERE status = 'Completed'";
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement ps = connection.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
@@ -42,10 +39,9 @@ public class DashboardDAO {
                 return rs.getInt(1);
             }
         } catch (Exception e) {
-            e.printStackTrace(); // In ra thông tin chi tiết về lỗi
+            e.printStackTrace();
             throw new Exception("Error getting total cars", e);
         }
         return 0;
     }
-
 }
